@@ -14,11 +14,12 @@ const quizData = [
 
 // Перемешивание массива
 function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-    return array;
+    return newArray;
 }
 
 let currentQuestion = 0;
@@ -31,6 +32,8 @@ errorMsg.className = 'error-msg';
 errorMsg.style.display = 'none';
 
 function loadQuestion() {
+    if (!shuffledQuizData.length) return;
+    
     const questionData = shuffledQuizData[currentQuestion];
     const isLastQuestion = currentQuestion === shuffledQuizData.length - 1;
 
@@ -89,7 +92,7 @@ if (window.location.pathname.includes('results.html')) {
     const resultsDiv = document.getElementById('results');
     const score = localStorage.getItem('quizScore');
     const totalQuestions = localStorage.getItem('totalQuestions');
-    const savedAnswers = JSON.parse(localStorage.getItem('userAnswers') || '[]';
+    const savedAnswers = JSON.parse(localStorage.getItem('userAnswers') || '[]');
     const shuffledQuestions = JSON.parse(localStorage.getItem('shuffledQuestions') || '[]');
     const percentage = (score / totalQuestions) * 100;
 
@@ -125,7 +128,8 @@ if (window.location.pathname.includes('results.html')) {
     `;
 }
 
+// Инициализация теста
 if (quizContainer) {
-    shuffledQuizData = shuffle([...quizData]);
+    shuffledQuizData = shuffle(quizData);
     loadQuestion();
 }
