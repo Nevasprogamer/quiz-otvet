@@ -4,8 +4,8 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: #1a1a2e; /* Тёмный фон */
+    color: #e6e6e6; /* Светлый текст для контраста */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,14 +17,14 @@ body {
     max-width: 800px;
     margin: 20px auto;
     padding: 30px;
-    background: #fff;
+    background: #16213e; /* Тёмно-синий контейнер */
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
 h1 {
-    color: #2c3e50;
+    color: #f7d0da; /* Розовый цвет для заголовков */
     margin-bottom: 25px;
     font-size: 2.2rem;
 }
@@ -32,8 +32,8 @@ h1 {
 .btn {
     display: inline-block;
     padding: 12px 25px;
-    background: #3498db;
-    color: #fff;
+    background: #f7d0da; /* Розовые кнопки */
+    color: #333; /* Тёмный текст на кнопках */
     text-decoration: none;
     border-radius: 8px;
     border: none;
@@ -41,23 +41,24 @@ h1 {
     font-size: 1rem;
     margin-top: 25px;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .btn:hover {
-    background: #2980b9;
+    background: #f8b9c9; /* Более насыщенный розовый при наведении */
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 .question {
     margin: 25px 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #2a2a4a;
     border-radius: 10px;
-    background: #f9f9f9;
+    background: #0f3460; /* Тёмный фон вопроса */
     text-align: left;
     font-size: 1.1rem;
+    color: #e6e6e6;
 }
 
 .options {
@@ -78,24 +79,95 @@ h1 {
 .option label {
     cursor: pointer;
     font-size: 1rem;
+    color: #e6e6e6;
 }
 
-/* Новый стиль для блока результатов */
+/* Стили для блока результатов */
 #results .container {
     width: 100%;
-    background: #fff;
+    background: #16213e;
     border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 #results p {
     margin: 10px 0;
+    color: #e6e6e6;
 }
 
 #results strong {
-    color: #2c3e50;
+    color: #f7d0da; /* Розовый для выделения */
     font-weight: 600;
+}
+
+.score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #f7d0da; /* Розовый круг счёта */
+    color: #333; /* Тёмный текст в круге */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(247, 208, 218, 0.3);
+}
+
+.rating {
+    font-size: 2rem;
+    color: #f7d0da; /* Розовые звёзды */
+    margin-bottom: 20px;
+    letter-spacing: 5px;
+}
+
+/* Стили для кнопки "Продолжить" */
+#next-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: #f7d0da; /* Розовая кнопка */
+    color: #333; /* Тёмный текст */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#next-btn:hover {
+    background-color: #f8b9c9; /* Более насыщенный розовый */
+}
+
+.review-section {
+    text-align: left;
+    margin-top: 30px;
+    color: #e6e6e6;
+}
+
+.review-section ol {
+    padding-left: 20px;
+}
+
+.review-section li {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-left: 5px solid #2a2a4a;
+    background-color: #0f3460;
+    border-radius: 8px;
+    color: #e6e6e6;
+}
+
+.review-section li.correct {
+    border-left-color: #2ecc71;
+    background-color: #0f3460;
+}
+
+.review-section li.incorrect {
+    border-left-color: #e74c3c;
+    background-color: #0f3460;
 }
 
 /* Адаптивность для мобильных устройств */
@@ -114,6 +186,7 @@ h1 {
     }
 }
 
+/* Остальные стили */
 .error-msg {
     color: #e74c3c;
     margin-top: 15px;
@@ -127,56 +200,11 @@ h1 {
     margin: 25px 0;
 }
 
-.score-circle {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: #4a6ee0;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    box-shadow: 0 5px 15px rgba(74, 110, 224, 0.3);
-}
-
-.rating {
-    font-size: 2rem;
-    color: #2ecc71; /* зелёные звёзды */
-    margin-bottom: 20px;
-    letter-spacing: 5px;
-}
-
 .score-text {
     font-size: 1.2rem;
     margin: 20px 0;
 }
 
-.btn {
-    margin-top: 30px;
-}
-
-/* Стили для кнопки \"Продолжить\" */
-#next-btn {
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px;
-    font-size: 1.1rem;
-    background-color: #4a6ee0;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#next-btn:hover {
-    background-color: #3a5bd0;
-}
-
-/* Анимация при смене вопроса */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -184,30 +212,4 @@ h1 {
 
 .question, .options, #next-btn {
     animation: fadeIn 0.3s ease-out;
-}
-.review-section {
-    text-align: left;
-    margin-top: 30px;
-}
-
-.review-section ol {
-    padding-left: 20px;
-}
-
-.review-section li {
-    margin-bottom: 20px;
-    padding: 15px;
-    border-left: 5px solid #ccc;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-.review-section li.correct {
-    border-left-color: #2ecc71;
-    background-color: #ecf9f1;
-}
-
-.review-section li.incorrect {
-    border-left-color: #e74c3c;
-    background-color: #fdecea;
 }
