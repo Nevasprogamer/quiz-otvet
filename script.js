@@ -7,35 +7,82 @@ const quizData = [
     { question: "Какая ОС является открытой (open-source)?", options: ["а) Windows", "б) macOS", "в) Linux"], correctAnswer: 2 },
     { question: "Какую ОС разработала компания Google для смартфонов?", options: ["а) iOS", "б) Android", "в) Tizen"], correctAnswer: 1 },
     { question: "Какая ОС не имеет графического интерфейса по умолчанию?", options: ["а) Windows", "б) Linux (многие серверные версии)", "в) macOS"], correctAnswer: 1 },
-    { question: "Какая ОС используется в умных часах (например, Samsung Galaxy Watch)?", options: ["а) Wear OS", "б) iOS", "в) Windows Mobile"], correctAnswer: 0 },
+    { question: "Какая ОС используется в умных часах (например, Samsung Galaxy Watch)?", options: ["а) Wear OS", "б) iOS", "в) Windows Mobile"], correctAnswer: 1 },
     { question: "Какая ОС подходит для программистов и разработчиков? (возможно несколько вариантов)", options: ["а) Windows", "б) Linux", "в) macOS"], correctAnswer: [1, 2] },
     { question: "Какая ОС раньше называлась 'Windows Phone'?", options: ["а) Android", "б) Windows Mobile", "в) KaiOS"], correctAnswer: 1 },
 ];
 
 // Перемешивание массива
 function shuffle(array) {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    return newArray;
 }
 
 let currentQuestion = 0;
 let score = 0;
 let userAnswers = [];
-let shuffledQuizData = [];
+
+// Обработка формы регистрации
+if (window.location.pathname.includes('register.html')) {
+    const registrationForm = document.getElementById('registration-form');
+    
+    registrationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const userData = {
+            lastname: document.getElementById('lastname').value.trim(),
+            firstname: document.getElementById('firstname').value.trim(),
+            class: document.getElementById('class').value.trim()
+        };
+        
+        localStorage.setItem('userData', JSON.stringify(userData));
+        window.location.href = 'quiz.html';
+    });
+}
+
+// Загрузка информации о пользователе
+function loadUserInfo() {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userInfoDiv = document.getElementById('user-info');
+    
+    if (userData && userInfoDiv) {
+        userInfoDiv.innerHTML = `
+            <div class="user-info">
+                <p><strong>Участник:</strong> ${userData.lastname} ${userData.firstname}</p>
+                <p><strong>Класс/Группа:</strong> ${userData.class}</p>
+            </div>
+        `;
+    }
+}
+
+// Загрузка информации о пользователе на странице результатов
+function loadUserResultsInfo() {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userResultsInfoDiv = document.getElementById('user-results-info');
+    
+    if (userData && userResultsInfoDiv) {
+        userResultsInfoDiv.innerHTML = `
+            <div class="user-results-info">
+                <h2>Результаты участника</h2>
+                <p><strong>ФИ:</strong> ${userData.lastname} ${userData.firstname}</p>
+                <p><strong>Класс/Группа:</strong> ${userData.class}</p>
+            </div>
+        `;
+    }
+}
+
 const quizContainer = document.getElementById('quiz-container');
 const errorMsg = document.createElement('div');
 errorMsg.className = 'error-msg';
+errorMsg.style.color = '#e74c3c';
+errorMsg.style.marginTop = '10px';
 errorMsg.style.display = 'none';
 
 function loadQuestion() {
-    if (!shuffledQuizData.length) return;
-    
-    const questionData = shuffledQuizData[currentQuestion];
-    const isLastQuestion = currentQuestion === shuffledQuizData.length - 1;
+    const questionData = quizData[currentQuestion];
+    const isLastQuestion = currentQuestion === quizData.length - 1;
 
     quizContainer.innerHTML = `
         <div class="question">${questionData.question}</div>
@@ -66,34 +113,33 @@ function handleNextQuestion() {
     errorMsg.style.display = 'none';
 
     const answer = parseInt(selectedOption.value);
-    const correctAnswers = Array.isArray(shuffledQuizData[currentQuestion].correctAnswer)
-        ? shuffledQuizData[currentQuestion].correctAnswer
-        : [shuffledQuizData[currentQuestion].correctAnswer];
-    
+    const correctAnswers = Array.isArray(quizData[currentQuestion].correctAnswer)
+        ? quizData[currentQuestion].correctAnswer
+        : [quizData[currentQuestion].correctAnswer];
     userAnswers.push(answer);
 
     if (correctAnswers.includes(answer)) {
         score++;
     }
 
-    if (currentQuestion < shuffledQuizData.length - 1) {
+    if (currentQuestion < quizData.length - 1) {
         currentQuestion++;
         loadQuestion();
     } else {
         localStorage.setItem('quizScore', score);
-        localStorage.setItem('totalQuestions', shuffledQuizData.length);
+        localStorage.setItem('totalQuestions', quizData.length);
         localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
-        localStorage.setItem('shuffledQuestions', JSON.stringify(shuffledQuizData));
         window.location.href = 'results.html';
     }
 }
 
 if (window.location.pathname.includes('results.html')) {
+    loadUserResultsInfo();
+    
     const resultsDiv = document.getElementById('results');
     const score = localStorage.getItem('quizScore');
     const totalQuestions = localStorage.getItem('totalQuestions');
     const savedAnswers = JSON.parse(localStorage.getItem('userAnswers') || '[]');
-    const shuffledQuestions = JSON.parse(localStorage.getItem('shuffledQuestions') || '[]');
     const percentage = (score / totalQuestions) * 100;
 
     let rating = '';
@@ -104,7 +150,7 @@ if (window.location.pathname.includes('results.html')) {
     else rating = '★';
 
     let reviewHTML = '<div class="review-section"><h3>Обратная связь по вопросам:</h3><ol>';
-    shuffledQuestions.forEach((q, index) => {
+    quizData.forEach((q, index) => {
         const correct = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
         const isCorrect = correct.includes(savedAnswers[index]);
         reviewHTML += `<li class="${isCorrect ? 'correct' : 'incorrect'}">
@@ -128,8 +174,8 @@ if (window.location.pathname.includes('results.html')) {
     `;
 }
 
-// Инициализация теста
 if (quizContainer) {
-    shuffledQuizData = shuffle(quizData);
+    loadUserInfo();
+    shuffle(quizData);
     loadQuestion();
 }
