@@ -213,3 +213,51 @@ h1 {
 .question, .options, #next-btn {
     animation: fadeIn 0.3s ease-out;
 }
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #f7d0da;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #2a2a4a;
+    border-radius: 8px;
+    background: #0f3460;
+    color: #e6e6e6;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #f7d0da;
+}
+
+.user-info, .user-results-info {
+    background: #0f3460;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+    border-left: 5px solid #f7d0da;
+}
+
+.user-info p, .user-results-info p {
+    margin: 8px 0;
+    color: #e6e6e6;
+}
+
+.user-results-info h2 {
+    color: #f7d0da;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
